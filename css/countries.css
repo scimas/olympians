@@ -4,19 +4,40 @@ body {
     font-family: 'Open Sans';
     text-align: center;
 }
-#olympic-img {
-    background: rgba(255, 255, 255, 0.6);
-}
-.button {
-    background: greenyellow;
-    border: none;
-    margin: 4px 2px;
-    padding: 10px 20px;
-}
+
 .medals img {
     width: 150px;
     padding: 10px 10px;
 }
+
 figure {
     display: inline-block;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #303030;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    padding: 14px 16px;
+}
+
+li a:hover:not(.active) {
+    background-color: #202020;
+}
+
+.active {
+    background-color: #60b000;
 }

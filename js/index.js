@@ -1,17 +1,3 @@
-function openAthletes() {
-    window.location.href = 'athletes.html';
-}
-
-function openCountries() {
-    window.location.href = 'countries.html';
-}
-
-const athletes_button = document.querySelector('button[id="athletes"]');
-const countries_button = document.querySelector('button[id="countries"]');
-
-//athletes_button.addEventListener('click', openAthletes);
-countries_button.addEventListener('click', openCountries);
-
 d3.csv('./data/athlete_events.csv', function(d) {
     return {
         Medal: d.Medal

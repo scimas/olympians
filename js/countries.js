@@ -1,17 +1,3 @@
-function openHome() {
-    window.location.href = 'index.html';
-}
-
-function openAthletes() {
-    window.location.href = 'athletes.html';
-}
-
-const home_button = document.querySelector('button[id="home"]');
-const athletes_button = document.querySelector('button[id="athletes"]');
-
-home_button.addEventListener('click', openHome);
-//athletes_button.addEventListener('click', openAthletes);
-
 var data = d3.csv('./data/athlete_events.csv', function(d) {
     return {
         Country: d.NOC,

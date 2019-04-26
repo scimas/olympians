@@ -1,11 +1,3 @@
-function openHome() {
-    window.location.href = 'index.html';
-}
-
-function openCountries() {
-    window.location.href = 'countries.html';
-}
-
 function searchfunc(e) {
     // Declare variables
     var input, filter, ul, li, a, i, txtValue;
@@ -24,12 +16,6 @@ function searchfunc(e) {
         }
     }
 }
-
-const home_button = document.querySelector('button[id="home"]');
-const countries_button = document.querySelector('button[id="countries"]');
-
-home_button.addEventListener('click', openHome);
-countries_button.addEventListener('click', openCountries);
 
 const athlete_selector = document.querySelector('#athlete-selector');
 athlete_selector.addEventListener('keyup', searchfunc);
