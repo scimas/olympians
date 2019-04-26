@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Athletes</title>
+    <meta name="author" content="Mihir Gadgil">
+    <link rel="stylesheet" href="./css/athletes.css" media="screen">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <h1>Athletes</h1>
+    <div id="nav-buttons">
+        <button type="button" class="button" id="home">Home</button>
+        <button type="button" class="button" id="countries">Countries</button>
+    </div>
+    <input type="text" id="athlete-selector" placeholder="Search for names..">
+    <ul id="athlete-list">
+    </ul>
+    <div class="medals">
+            <figure id="gold-medal">
+                <img src="./img/Gold_medal.svg" alt="Gold medal">
+                <figcaption>0</figcaption>
+            </figure>
+            <figure id="silver-medal">
+                <img src="./img/Silver_medal.svg" alt="Silver medal">
+                <figcaption>0</figcaption>
+            </figure>
+            <figure id="bronze-medal">
+                <img src="./img/Bronze_medal.svg" alt="Bronze medal">
+                <figcaption>0</figcaption>
+            </figure>
+    </div>
+    <svg width=500 height=500 id=""></svg>
+    <script src="./js/athletes.js"></script>
+</body>
+</html>

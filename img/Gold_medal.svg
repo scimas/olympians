@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.0"
+   width="300"
+   height="300"
+   viewBox="-18 -6 36 17">
+  <defs>
+    <style type="text/css"><![CDATA[
+      circle.center {
+        fill:none;
+        stroke:#ffcd00;
+        stroke-width:1;
+      }
+      circle.border {
+        fill:none;
+        stroke:#d39a00;
+        stroke-width:1.4;
+      }
+    ]]></style>
+  </defs>
+  <path
+     d="m 4.1016951,-1.7372881 a 7.084746,7.0508476 0 1 1 -14.1694921,0 7.084746,7.0508476 0 1 1 14.1694921,0 z"
+     transform="matrix(2.477719,0,0,2.477719,7.391162,6.804512)"
+     style="fill:#ffcd00;stroke:#d39a00;stroke-width:0.35999241;stroke-miterlimit:4;" />
+  <g transform="matrix(0.793303,0,0,0.793303,0,0.516742)" >
+    <circle class="border" r="5" cx="-6" cy="5" />
+    <circle class="border" r="5" cx="6" cy="5" />
+    <circle class="center" r="5" cx="-6" cy="5" />
+    <circle class="center" r="5" cx="6" cy="5" />
+    <circle class="border" r="5" cx="-12" />
+    <circle class="border" r="5" />
+    <circle class="border" r="5" cx="12" />
+    <circle class="center" r="5" cx="-12" />
+    <circle class="center" r="5" />
+    <circle class="center" r="5" cx="12" />
+  </g>
+</svg>
