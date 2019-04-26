@@ -1,6 +1,6 @@
-var data = d3.csv('./data/athlete_events.csv', function(d) {
+var data = d3.csv('./data/olympics_data.csv', function(d) {
     return {
-        Country: d.NOC,
+        Country: d.region,
         Medal: d.Medal
     };
 });
@@ -24,7 +24,7 @@ function graph(event) {
 
 data.then(function(data) {
     d3.select('#country-selector').selectAll('option')
-        .data(d3.map(data, function (d) {return d.Country;}).keys()).enter()
+        .data(d3.map(data, function (d) {return d.Country;}).keys().sort()).enter()
         .append('option')
         .attr('value', function (d) {return d;})
         .text(function (d) {return d});

@@ -20,21 +20,12 @@ function searchfunc(e) {
 const athlete_selector = document.querySelector('#athlete-selector');
 athlete_selector.addEventListener('keyup', searchfunc);
 
-d3.csv('./data/athlete_events.csv', function(d) {
+d3.csv('./data/olympics_data.csv', function(d) {
     return {
         ID: d.ID,
         Name: d.Name
     };
 }).then(function(data) {
-    // var flags = [], nd = [], i;
-    // for(i = 0; i < data.length/1000; i++) {
-    //     if(flags[data[i].ID]) {
-    //         continue;
-    //     }
-    //     flags[data[i].ID] = true;
-    //     nd.push({'ID': data[i].ID, 'Name': data[i].Name});
-    // }
-    // console.log(nd);
     d3.select('#athlete-list').selectAll('li')
         .data(d3.map(data, function (d) {return d.Name;}).keys()).enter()
         .append('li')

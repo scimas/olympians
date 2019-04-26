@@ -1,4 +1,4 @@
-d3.csv('./data/athlete_events.csv', function(d) {
+d3.csv('./data/olympics_data.csv', function(d) {
     return {
         Medal: d.Medal
     };
