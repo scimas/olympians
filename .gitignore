@@ -1,4 +1,7 @@
 .ipynb_checkpoints
 *.pdf
 other
+*.ipynb
+data/athlete_events.csv
+data/noc_regions.csv
 
