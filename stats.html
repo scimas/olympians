@@ -6,18 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Countries</title>
     <meta name="author" content="Mihir Gadgil">
-    <link rel="stylesheet" href="./css/countries.css" media="screen">
+    <link rel="stylesheet" href="./css/stats.css" media="screen">
     <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body>
     <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="athletes.html">Athletes</a></li>
-        <li><a href="countries.html" class="active">Countries</a></li>
+        <li><a href="stats.html" class="active">Statistics</a></li>
     </ul>
-    <h1>Countries</h1>
+    <h1>Statistics</h1>
+    <img src="" alt="country-flag" id="country-flag">
     <select name="Country" id="country-selector">
         <option value="None">Select a country</option>
+    </select>
+    <select name="Sport" id="sport-selector">
+        <option value="None">Select a sport</option>
     </select>
     <br>
     <div class="medals">
@@ -34,6 +37,8 @@
                 <figcaption>0</figcaption>
             </figure>
     </div>
-    <script src="./js/countries.js"></script>
+    <svg width=800 height=450 id="participation"></svg>
+    <svg width=800 height=450 id="performance"></svg>
+    <script src="./js/stats.js"></script>
 </body>
 </html>

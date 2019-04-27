@@ -4,6 +4,14 @@ body {
     font-family: 'Open Sans';
     text-align: center;
 }
+.medals img {
+    width: 150px;
+    padding: 10px 10px;
+}
+
+figure {
+    display: inline-block;
+}
 
 #athlete-list {
     list-style-type: none;

@@ -41,3 +41,31 @@ li a:hover:not(.active) {
 .active {
     background-color: #60b000;
 }
+
+svg text {
+    fill: white;
+    font-size: 14px;
+}
+
+.time_series {
+    fill: none;
+    stroke-width: 2px;
+}
+
+.time_scatter {
+    fill: white;
+}
+
+.tooltip {
+    position: absolute;
+    pointer-events: none;
+    font-family: 'Noto Sans';
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px;
+    text-align: center;
+}
+
+#country-flag {
+    width: 30px;
+}

@@ -1,33 +1,34 @@
-function searchfunc(e) {
-    // Declare variables
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.getElementById('athlete-selector');
-    filter = input.value.toUpperCase();
-    ul = document.getElementById('athlete-list');
-    li = ul.getElementsByTagName('li');
-  
-    // Loop through all list items, and hide those who don't match the search query
-    for (i = 0; i < li.length; i++) {
-        txtValue = li[i].textContent || li[i].innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-        } else {
-            li[i].style.display = "none";
-        }
-    }
-}
-
-const athlete_selector = document.querySelector('#athlete-selector');
-athlete_selector.addEventListener('keyup', searchfunc);
-
-d3.csv('./data/olympics_data.csv', function(d) {
+var data = d3.csv('./data/olympics_data.csv', function(d) {
     return {
         ID: d.ID,
-        Name: d.Name
+        Name: d.Name,
+        Medal: d.Medal
     };
-}).then(function(data) {
-    d3.select('#athlete-list').selectAll('li')
-        .data(d3.map(data, function (d) {return d.Name;}).keys()).enter()
-        .append('li')
+});
+
+function graph(event) {
+    data.then(function (data) {
+        var gold = d3.sum(data, function (d) {if(d.Name == event.target.value) return d.Medal == "Gold";});
+        var silver = d3.sum(data, function (d) {if(d.Name == event.target.value) return d.Medal == "Silver";});
+        var bronze = d3.sum(data, function (d) {if(d.Name == event.target.value) return d.Medal == "Bronze";});
+        
+        var gold_caption = d3.select('#gold-medal').select('figcaption');
+        gold_caption.text(gold);
+
+        var silver_caption = d3.select('#silver-medal').select('figcaption');
+        silver_caption.text(silver);
+
+        var bronze_caption = d3.select('#bronze-medal').select('figcaption');
+        bronze_caption.text(bronze);
+    });
+}
+
+data.then(function(data) {
+    d3.select('#athlete-selector').selectAll('option')
+        .data(d3.map(data, function (d) {return d.Name;}).keys().sort()).enter()
+        .append('option')
+        .attr('value', function (d) {return d;})
         .text(function (d) {return d});
 });
+
+document.querySelector('#athlete-selector').addEventListener(graph);
