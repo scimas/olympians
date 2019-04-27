@@ -12,11 +12,17 @@
 <body>
     <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="athletes.html" class="active">Athletes</a></li>
         <li><a href="countries.html">Countries</a></li>
+        <li><a href="athletes.html" class="active">Athletes</a></li>
     </ul>
     <h1>Athletes</h1>
-    <select name="Athlete" id="athlete-selector" size="10">
+    <select name="Country" id="country-selector">
+        <option value="None">Select a country</option>
+    </select>
+    <select name="Sport" id="sport-selector">
+            <option value="None">Select a sport</option>
+    </select>
+    <select name="Athlete" id="athlete-selector">
         <option value="None">Select an athlete</option>
     </select>
     <div class="medals">
@@ -33,7 +39,13 @@
                 <figcaption>0</figcaption>
             </figure>
     </div>
-    <svg width=500 height=500 id=""></svg>
+    <div id="results">
+        <span style="color: green">Sports:</span>
+        <br>
+        <span style="color: green">Events:</span>
+        <br>
+        <span style="color: green">Years active:</span>
+    </div>
     <script src="./js/athletes.js"></script>
 </body>
 </html>

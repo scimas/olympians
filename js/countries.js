@@ -61,7 +61,7 @@ data.then(function (data) {
         .data(d3.map(data, function (d) {return d.Sport;}).keys().sort()).enter()
         .append('option')
         .attr('value', function (d) {return d;})
-        .text(function (d) {return d});
+        .text(function (d) {return d;});
 });
 
 data.then(function (data) {

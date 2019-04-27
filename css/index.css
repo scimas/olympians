@@ -46,3 +46,18 @@ li a:hover:not(.active) {
 .active {
     background-color: #60b000;
 }
+
+.extra-text {
+    margin: auto;
+    width: 70%;
+    text-align: left;
+    padding-top: 10px;
+}
+
+.extra-text a:link {
+    color: greenyellow;
+}
+
+.extra-text a:visited {
+    color: green;
+}
