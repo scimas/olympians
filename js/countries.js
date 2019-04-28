@@ -10,8 +10,6 @@ var data = d3.csv('./data/olympics_data.csv', function(d) {
 
 var country_selector = document.querySelector('#country-selector');
 var sport_selector = document.querySelector('#sport-selector');
-country_selector.addEventListener('change', medals);
-sport_selector.addEventListener('change', medals);
 
 const margin = {
     top: 40,
@@ -25,32 +23,36 @@ data.then(generate_options);
 data.then(plot_participation);
 data.then(plot_performance);
 
-function medals(event) {
-    var gold = 0, silver = 0, bronze = 0;
+function medals(data) {
+    function update(event) {
+        var gold = 0, silver = 0, bronze = 0;
 
-    if (sport_selector.value == 'None') {
-        gold = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Gold";});
-        silver = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Silver";});
-        bronze = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Bronze";});
-    }
-    else if (country_selector.value == 'None') {
-        gold = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Gold";});
-        silver = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Silver";});
-        bronze = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Bronze";});
-    }
-    else {
-        gold = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Gold";});
-        silver = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Silver";});
-        bronze = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Bronze";});
-    }
-    var gold_caption = d3.select('#gold-medal').select('figcaption');
-    gold_caption.text(gold);
+        if (sport_selector.value == 'None') {
+            gold = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Gold";});
+            silver = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Silver";});
+            bronze = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Bronze";});
+        }
+        else if (country_selector.value == 'None') {
+            gold = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Gold";});
+            silver = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Silver";});
+            bronze = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Bronze";});
+        }
+        else {
+            gold = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Gold";});
+            silver = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Silver";});
+            bronze = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Bronze";});
+        }
+        var gold_caption = d3.select('#gold-medal').select('figcaption');
+        gold_caption.text(gold);
 
-    var silver_caption = d3.select('#silver-medal').select('figcaption');
-    silver_caption.text(silver);
+        var silver_caption = d3.select('#silver-medal').select('figcaption');
+        silver_caption.text(silver);
 
-    var bronze_caption = d3.select('#bronze-medal').select('figcaption');
-    bronze_caption.text(bronze);
+        var bronze_caption = d3.select('#bronze-medal').select('figcaption');
+        bronze_caption.text(bronze);
+    }
+    country_selector.addEventListener('change', update);
+    sport_selector.addEventListener('change', update);
 }
 
 function generate_options(data) {
