@@ -52,8 +52,12 @@ svg text {
     stroke-width: 2px;
 }
 
-.time_scatter {
+#average {
     fill: white;
+}
+
+#country {
+    fill: green;
 }
 
 .tooltip {

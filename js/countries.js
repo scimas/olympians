@@ -8,36 +8,6 @@ var data = d3.csv('./data/olympics_data.csv', function(d) {
     };
 });
 
-function medals(event) {
-    data.then(function (data) {
-        var gold = 0, silver = 0, bronze = 0;
-
-        if (sport_selector.value == 'None') {
-            gold = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Gold";});
-            silver = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Silver";});
-            bronze = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Bronze";});
-        }
-        else if (country_selector.value == 'None') {
-            gold = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Gold";});
-            silver = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Silver";});
-            bronze = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Bronze";});
-        }
-        else {
-            gold = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Gold";});
-            silver = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Silver";});
-            bronze = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Bronze";});
-        }
-        var gold_caption = d3.select('#gold-medal').select('figcaption');
-        gold_caption.text(gold);
-
-        var silver_caption = d3.select('#silver-medal').select('figcaption');
-        silver_caption.text(silver);
-
-        var bronze_caption = d3.select('#bronze-medal').select('figcaption');
-        bronze_caption.text(bronze);
-    });
-}
-
 var country_selector = document.querySelector('#country-selector');
 var sport_selector = document.querySelector('#sport-selector');
 country_selector.addEventListener('change', medals);
@@ -50,7 +20,40 @@ const margin = {
     right: 20
 };
 
-data.then(function (data) {
+data.then(medals);
+data.then(generate_options);
+data.then(plot_participation);
+data.then(plot_performance);
+
+function medals(event) {
+    var gold = 0, silver = 0, bronze = 0;
+
+    if (sport_selector.value == 'None') {
+        gold = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Gold";});
+        silver = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Silver";});
+        bronze = d3.sum(data, function (d) {if(d.Country == country_selector.value) return d.Medal == "Bronze";});
+    }
+    else if (country_selector.value == 'None') {
+        gold = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Gold";});
+        silver = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Silver";});
+        bronze = d3.sum(data, function (d) {if(d.Sport == sport_selector.value) return d.Medal == "Bronze";});
+    }
+    else {
+        gold = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Gold";});
+        silver = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Silver";});
+        bronze = d3.sum(data, function (d) {if(d.Country == country_selector.value && d.Sport == sport_selector.value) return d.Medal == "Bronze";});
+    }
+    var gold_caption = d3.select('#gold-medal').select('figcaption');
+    gold_caption.text(gold);
+
+    var silver_caption = d3.select('#silver-medal').select('figcaption');
+    silver_caption.text(silver);
+
+    var bronze_caption = d3.select('#bronze-medal').select('figcaption');
+    bronze_caption.text(bronze);
+}
+
+function generate_options(data) {
     d3.select('#country-selector').selectAll('option')
         .data(d3.map(data, function (d) {return d.Country;}).keys().sort()).enter()
         .append('option')
@@ -62,9 +65,9 @@ data.then(function (data) {
         .append('option')
         .attr('value', function (d) {return d;})
         .text(function (d) {return d;});
-});
+}
 
-data.then(function (data) {
+function plot_participation(data) {
     var average_participation = d3.nest()
         .key(function (d) {return d.Year;})
         .rollup(function (g) {
@@ -115,6 +118,7 @@ data.then(function (data) {
         .attr('id', 'country-path');
     var avg_circle = svg.append('g')
         .attr('class', 'time_scatter')
+        .attr('id', 'average')
         .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
     avg_circle.selectAll('circle')
         .data(average_participation).enter()
@@ -137,6 +141,7 @@ data.then(function (data) {
         });
     var country_circle = svg.append('g')
         .attr('class', 'time_scatter')
+        .attr('id', 'country')
         .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
     var legend = svg.append('g')
         .attr('id', 'legend')
@@ -223,16 +228,22 @@ data.then(function (data) {
             .y(function (d) {return y(d.value);});
         path_group.select('#country-path')
             .data([country_participation])
+            .transition()
+            .duration(1000)
             .attr('d', country_line)
             .attr('stroke', 'green');
         path_group.select('#avg-path')
             .data([average_participation])
+            .transition()
+            .duration(1000)
             .attr('d', avg_line);
         country_circle.selectAll('circle')
             .data(country_participation).exit()
             .remove();
         country_circle.selectAll('circle')
             .data(country_participation)
+            .transition()
+            .duration(1000)
             .attr('cx', function (d) {return x(new Date(d.key));})
             .attr('cy', function (d) {return y(d.value);});
         country_circle.selectAll('circle')
@@ -259,6 +270,8 @@ data.then(function (data) {
             .remove();
         avg_circle.selectAll('circle')
             .data(average_participation)
+            .transition()
+            .duration(1000)
             .attr('cx', function (d) {return x(new Date(d.key));})
             .attr('cy', function (d) {return y(d.value);});
         avg_circle.selectAll('circle')
@@ -283,9 +296,9 @@ data.then(function (data) {
     }
     country_selector.addEventListener('change', update);
     sport_selector.addEventListener('change', update);
-});
+}
 
-data.then(function (data) {
+function plot_performance(data) {
     var average_performance = d3.nest()
         .key(function (d) {return d.Year;})
         .rollup(function (g) {
@@ -336,6 +349,7 @@ data.then(function (data) {
         .attr('id', 'country-path');
     var avg_circle = svg.append('g')
         .attr('class', 'time_scatter')
+        .attr('id', 'average')
         .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
     avg_circle.selectAll('circle')
         .data(average_performance).enter()
@@ -358,6 +372,7 @@ data.then(function (data) {
         });
     var country_circle = svg.append('g')
         .attr('class', 'time_scatter')
+        .attr('id', 'country')
         .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
     var legend = svg.append('g')
         .attr('id', 'legend')
@@ -444,16 +459,22 @@ data.then(function (data) {
             .y(function (d) {return y(d.value);});
         path_group.select('#country-path')
             .data([country_performance])
+            .transition()
+            .duration(1000)
             .attr('d', country_line)
             .attr('stroke', 'green');
         path_group.select('#avg-path')
             .data([average_performance])
+            .transition()
+            .duration(1000)
             .attr('d', avg_line);
         country_circle.selectAll('circle')
             .data(country_performance).exit()
             .remove();
         country_circle.selectAll('circle')
             .data(country_performance)
+            .transition()
+            .duration(1000)
             .attr('cx', function (d) {return x(new Date(d.key));})
             .attr('cy', function (d) {return y(d.value);});
         country_circle.selectAll('circle')
@@ -480,6 +501,8 @@ data.then(function (data) {
             .remove();
         avg_circle.selectAll('circle')
             .data(average_performance)
+            .transition()
+            .duration(1000)
             .attr('cx', function (d) {return x(new Date(d.key));})
             .attr('cy', function (d) {return y(d.value);});
         avg_circle.selectAll('circle')
@@ -504,4 +527,4 @@ data.then(function (data) {
     }
     country_selector.addEventListener('change', update);
     sport_selector.addEventListener('change', update);
-});
+}
