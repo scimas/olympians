@@ -1,3 +1,4 @@
+// Load the data
 var data = d3.csv('./data/olympics_data.csv', function(d) {
     return {
         Name: d.Name,
@@ -13,6 +14,7 @@ var data = d3.csv('./data/olympics_data.csv', function(d) {
     };
 });
 
+// References to the drop-down selects
 var country_selector = document.querySelector('#country-selector');
 var athlete_selector = document.querySelector('#athlete-selector');
 var sport_selector = document.querySelector('#sport-selector');
@@ -23,6 +25,7 @@ data.then(update_athlete);
 data.then(update_sport);
 data.then(update_results);
 
+/** Creates options for the country selection drop-down. */
 function generate_options(data) {
     d3.select('#country-selector').selectAll('option')
         .data(d3.map(data, function (d) {return d.Country;}).keys().sort()).enter()
@@ -31,6 +34,7 @@ function generate_options(data) {
         .text(function (d) {return d});
 }
 
+/** Updates the medal counts based on selected athlete. */
 function medals(data) {
     function update(event) {
         var gold = d3.sum(data, function (d) {if(d.Name == athlete_selector.value) return d.Medal == "Gold";});
@@ -49,6 +53,7 @@ function medals(data) {
     athlete_selector.addEventListener('change', update);
 }
 
+/** Updates athlete selection options based on selected country and/or sport. */
 function update_athlete(data) {
     function update(event) {
         var sel = d3.select('#athlete-selector').selectAll('option')
@@ -84,6 +89,7 @@ function update_athlete(data) {
     sport_selector.addEventListener('change', update);
 }
 
+/** Updates sport selection options based on selected country. */
 function update_sport(data) {
     function update(event) {
         var sel = d3.select('#sport-selector').selectAll('option')
@@ -112,33 +118,39 @@ function update_sport(data) {
     country_selector.addEventListener('change', update);
 }
 
+/** Updates the results table based on selected athlete. */
 function update_results(data) {
     function update(event) {
         var result = d3.select('#results');
+        var filtered_data = data.filter(
+            function (d) {return d.Name == athlete_selector.value;}
+        );
+
+        // Select unique sports
         var sports = d3.map(
-            data.filter(
-                function (d) {return d.Name == athlete_selector.value;}
-            ),
+            filtered_data,
             function (d) {
                 return d.Sport;
             }
         ).keys().sort();
+
+        // Select unique events
         var events = d3.map(
-            data.filter(
-                function (d) {return d.Name == athlete_selector.value;}
-            ),
+            filtered_data,
             function (d) {
                 return d.Event;
             }
         ).keys().sort();
+
+        // Select unique years
         var years = d3.map(
-            data.filter(
-                function (d) {return d.Name == athlete_selector.value;}
-            ),
+            filtered_data,
             function (d) {
                 return d.Year;
             }
         ).keys().sort();
+
+        // Make strings
         var sport_string = '', event_string = '', year_string = '';
         for (s in sports) {
             sport_string += sports[s] + ', ';
@@ -152,30 +164,28 @@ function update_results(data) {
         sport_string = sport_string.slice(0, sport_string.length-2);
         event_string = event_string.slice(0, event_string.length-2)
         year_string = year_string.slice(0, year_string.length-2);
+
+        // Athlete's latest age
         var age = d3.max(
-            data.filter(
-                function (d) {return d.Name == athlete_selector.value;}
-            ),
+            filtered_data,
             function (d) {return d.Age;}
         );
+        // Athlete's sex
         var sex = d3.map(
-            data.filter(
-                function (d) {return d.Name == athlete_selector.value;}
-            ),
+            filtered_data,
             function (d) {return d.Sex;}
         ).keys()[0];
+        // Athlete's latest height
         var height = d3.max(
-            data.filter(
-                function (d) {return d.Name == athlete_selector.value;}
-            ),
+            filtered_data,
             function (d) {return d.Height;}
         );
+        // Athlete's mean weight
         var weight = d3.mean(
-            data.filter(
-                function (d) {return d.Name == athlete_selector.value;}
-            ),
+            filtered_data,
             function (d) {return d.Weight;}
         );
+        // Render
         result.select('#age').text(age);
         result.select('#sex').text(sex);
         result.select('#height').text(height);

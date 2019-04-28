@@ -1,3 +1,4 @@
+// Show the total medal count
 d3.csv('./data/olympics_data.csv', function(d) {
     return {
         Medal: d.Medal

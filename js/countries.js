@@ -1,3 +1,4 @@
+// Load the data
 var data = d3.csv('./data/olympics_data.csv', function(d) {
     return {
         ID: d.ID,
@@ -8,9 +9,11 @@ var data = d3.csv('./data/olympics_data.csv', function(d) {
     };
 });
 
+// References to the drop-down selects
 var country_selector = document.querySelector('#country-selector');
 var sport_selector = document.querySelector('#sport-selector');
 
+// Margin for the plots
 const margin = {
     top: 40,
     bottom: 40,
@@ -23,6 +26,7 @@ data.then(generate_options);
 data.then(plot_participation);
 data.then(plot_performance);
 
+/** Updates the medal counts based on selected country and/or sport. */
 function medals(data) {
     function update(event) {
         var gold = 0, silver = 0, bronze = 0;
@@ -55,6 +59,7 @@ function medals(data) {
     sport_selector.addEventListener('change', update);
 }
 
+/** Creates options for the country and sport selection drop-down. */
 function generate_options(data) {
     d3.select('#country-selector').selectAll('option')
         .data(d3.map(data, function (d) {return d.Country;}).keys().sort()).enter()
@@ -69,7 +74,9 @@ function generate_options(data) {
         .text(function (d) {return d;});
 }
 
+/** Creates and updates the participation plot based on selected country and/or sport. */
 function plot_participation(data) {
+    // Group data based on year
     var average_participation = d3.nest()
         .key(function (d) {return d.Year;})
         .rollup(function (g) {
@@ -90,6 +97,9 @@ function plot_participation(data) {
     var svg = d3.select('#participation');
     const width = svg.attr('width') - margin.left - margin.right;
     const height = svg.attr('height') - margin.top - margin.bottom;
+    var tooltip = d3.select('body').append('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0);
     
     var x = d3.scaleTime()
         .domain(d3.extent(average_participation, function (d) {return new Date(d.key);})).nice()
@@ -105,9 +115,11 @@ function plot_participation(data) {
         .attr('class', 'yaxis')
         .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')')
         .call(d3.axisLeft(y));
+    // Average participation path generator
     var avg_line = d3.line()
         .x(function (d) {return x(new Date(d.key));})
         .y(function (d) {return y(d.value);});
+    // Group element for the path elements
     var path_group = svg.append('g')
         .attr('class', 'time_series')
         .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
@@ -145,6 +157,8 @@ function plot_participation(data) {
         .attr('class', 'time_scatter')
         .attr('id', 'country')
         .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+    
+    // Legend
     var legend = svg.append('g')
         .attr('id', 'legend')
         .attr('transform', 'translate(' + x(new Date('1940')) + ', ' + 0 + ')');
@@ -172,6 +186,8 @@ function plot_participation(data) {
         .attr('width', 15)
         .attr('height', 15)
         .text('Country\'s Participation');
+    
+    // Axis labels
     svg.append('text')
         .attr('x', width/2)
         .attr('y', height + margin.top + margin.bottom - 5)
@@ -182,11 +198,9 @@ function plot_participation(data) {
         .attr('y', margin.top - 15)
         .text('Number of Participants');
     
-    var tooltip = d3.select('body').append('div')
-        .attr('class', 'tooltip')
-        .style('opacity', 0);
-    
+    /** This is the function that actually updates the plot. */
     function update(event) {
+        // Group data based on year, this time for specific country/sport
         var country_participation = d3.nest()
             .key(function (d) {return d.Year;})
             .rollup(function (g) {
@@ -199,6 +213,7 @@ function plot_participation(data) {
         else {
             country_participation = country_participation.entries(data.filter(function (d) {return d.Country == country_selector.value && d.Sport == sport_selector.value;}));
         }
+        // Recreate for average
         average_participation = d3.nest()
             .key(function (d) {return d.Year;})
             .rollup(function (g) {
@@ -215,6 +230,8 @@ function plot_participation(data) {
                 return d.Sport == sport_selector.value;
             }));
         }
+
+        // Y-axis needs to be updated, but not the X-axis
         var country_max = d3.max(country_participation, function (d) {return d.value;});
         var average_max = d3.max(average_participation, function (d) {return d.value;});
         var y = d3.scaleLinear()
@@ -222,6 +239,7 @@ function plot_participation(data) {
             .range([height, 0]);
         d3.select('#participation').select('.yaxis')
             .call(d3.axisLeft(y));
+        // Country and average path generators
         var country_line = d3.line()
             .x(function (d) {return x(new Date(d.key));})
             .y(function (d) {return y(d.value);});
@@ -300,6 +318,7 @@ function plot_participation(data) {
     sport_selector.addEventListener('change', update);
 }
 
+/** Creates and updates the performance plot based on selected country and/or sport. */
 function plot_performance(data) {
     var average_performance = d3.nest()
         .key(function (d) {return d.Year;})
@@ -417,6 +436,7 @@ function plot_performance(data) {
         .attr('class', 'tooltip')
         .style('opacity', 0);
     
+    /** This is the function that actually updates the plot. */
     function update(event) {
         var country_performance = d3.nest()
             .key(function (d) {return d.Year;})
