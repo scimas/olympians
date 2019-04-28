@@ -305,6 +305,7 @@ function plot_performance(data) {
         .key(function (d) {return d.Year;})
         .rollup(function (g) {
             var medals = d3.sum(g, function (g) {return g.Medal != '';});
+            console.log(g.length);
             var countries = d3.set(g, function (g) {return g.Country;}).values().length;
             return medals/countries;
         })

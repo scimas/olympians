@@ -52,3 +52,7 @@ li a:hover:not(.active) {
     width: 50%;
     text-align: left;
 }
+
+#results span {
+    color: green;
+}

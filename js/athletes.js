@@ -1,6 +1,10 @@
 var data = d3.csv('./data/olympics_data.csv', function(d) {
     return {
         Name: d.Name,
+        Sex: d.Sex,
+        Age: d.Age,
+        Height: d.Height,
+        Weight: d.Weight,
         Year: d.Year,
         Country: d.region,
         Medal: d.Medal,
@@ -148,12 +152,44 @@ function update_results(data) {
         sport_string = sport_string.slice(0, sport_string.length-2);
         event_string = event_string.slice(0, event_string.length-2)
         year_string = year_string.slice(0, year_string.length-2);
+        var age = d3.max(
+            data.filter(
+                function (d) {return d.Name == athlete_selector.value;}
+            ),
+            function (d) {return d.Age;}
+        );
+        var sex = d3.map(
+            data.filter(
+                function (d) {return d.Name == athlete_selector.value;}
+            ),
+            function (d) {return d.Sex;}
+        ).keys()[0];
+        var height = d3.max(
+            data.filter(
+                function (d) {return d.Name == athlete_selector.value;}
+            ),
+            function (d) {return d.Height;}
+        );
+        var weight = d3.mean(
+            data.filter(
+                function (d) {return d.Name == athlete_selector.value;}
+            ),
+            function (d) {return d.Weight;}
+        );
         result.html(
-            '<span style="color: green">Sports: </span>' + sport_string +
+            '<span>Age (as of latest participation): </span>' + age + ' yr' +
             '<br>' +
-            '<span style="color: green">Events: </span>' + event_string +
+            '<span>Sex: </span>' + sex +
             '<br>' +
-            '<span style="color: green">Years active: </span>' + year_string
+            '<span>Height (as of latest participation): </span>' + height + ' cm' +
+            '<br>' +
+            '<span>Weight (average): </span>' + weight + ' kg' +
+            '<br>' +
+            '<span>Sports: </span>' + sport_string +
+            '<br>' +
+            '<span>Events: </span>' + event_string +
+            '<br>' +
+            '<span>Years active: </span>' + year_string
         );
     }
     athlete_selector.addEventListener('change', update);
