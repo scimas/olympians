@@ -5,9 +5,15 @@ body {
     text-align: center;
 }
 
+#olympic-img img {
+    background: white;
+    width: 200px;
+    padding: 4px;
+}
+
 .medals img {
-    width: 150px;
-    padding: 10px 10px;
+    width: 100px;
+    padding: 5px 5px;
 }
 
 figure {
