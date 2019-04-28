@@ -176,21 +176,13 @@ function update_results(data) {
             ),
             function (d) {return d.Weight;}
         );
-        result.html(
-            '<span>Age (as of latest participation): </span>' + age + ' yr' +
-            '<br>' +
-            '<span>Sex: </span>' + sex +
-            '<br>' +
-            '<span>Height (as of latest participation): </span>' + height + ' cm' +
-            '<br>' +
-            '<span>Weight (average): </span>' + weight + ' kg' +
-            '<br>' +
-            '<span>Sports: </span>' + sport_string +
-            '<br>' +
-            '<span>Events: </span>' + event_string +
-            '<br>' +
-            '<span>Years active: </span>' + year_string
-        );
+        result.select('#age').text(age);
+        result.select('#sex').text(sex);
+        result.select('#height').text(height);
+        result.select('#weight').text(weight);
+        result.select('#sports').text(sport_string);
+        result.select('#events').text(event_string);
+        result.select('#years').text(year_string);
     }
     athlete_selector.addEventListener('change', update);
 }

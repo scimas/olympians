@@ -56,10 +56,10 @@ li a:hover:not(.active) {
 
 #results {
     margin: auto;
-    width: 50%;
+    width: 40%;
     text-align: left;
 }
 
-#results span {
+#results td:not([id]) {
     color: green;
 }
