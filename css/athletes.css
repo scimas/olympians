@@ -61,5 +61,6 @@ li a:hover:not(.active) {
 }
 
 #results td:not([id]) {
+    width: 40%;
     color: green;
 }
